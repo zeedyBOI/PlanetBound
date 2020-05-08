@@ -109,6 +109,18 @@ public abstract class Ship {
         return false;
     }
 
+    protected void setDroneSpawnPos(int x, int y) {
+        getMiningDrone().setPos(x, y);
+    }
+
+    protected int getDroneSpawnX() {
+        return getMiningDrone().getSpawnX();
+    }
+
+    protected int getDroneSpawnY() {
+        return getMiningDrone().getSpawnY();
+    }
+
     protected MiningDrone getMiningDrone() {
         return drone;
     }
@@ -131,6 +143,14 @@ public abstract class Ship {
 
     protected void newMiningDrone() {
         this.drone = new MiningDrone();
+    }
+
+    protected String emptyDrone() {
+        return getMiningDrone().getResourceMined();
+    }
+
+    protected void putResourceInDrone(String resource) {
+        getMiningDrone().setResourceMined(resource);
     }
 
     protected Map<String, Integer> getResources() {

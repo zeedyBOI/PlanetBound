@@ -17,10 +17,10 @@ public class InOrbit extends Adapter {
                 getData().killCrew();
                 break;
             case 2:
-
+                getData().addResourceToShip(getData().randomD6(), getData().getRandomResource());
                 break;
             case 3:
-                //TODO:Cargo Loss
+
                 break;
             case 4:
                 //TODO:Fuel Loss

@@ -17,12 +17,7 @@ public class VisitSS extends Adapter {
     }
 
     public boolean convertResources(String from, String to) {
-        if (getData().getResourceQuantityInShip(from) > 1 && getData().getResourceQuantityInShip(to) < getData().getCargoSpacePerResource()) {
-            getShipResources().replace(from, (getData().getResourceQuantityInShip(from) - 1));
-            getShipResources().replace(to, (getData().getResourceQuantityInShip(to) + 1));
-            return true;
-        }
-        return false;
+        return getData().convertResources(from, to);
     }
 
     public boolean hireCrewMember(String officer) {

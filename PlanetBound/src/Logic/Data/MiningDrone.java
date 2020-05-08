@@ -4,11 +4,35 @@ public class MiningDrone {
     private boolean health;
     private int armor;
     private boolean readyToLeavePlanet;
+    private int spawnX, spawnY;
+    private String resourceMined;
 
     public MiningDrone() {
         this.health = true;
         this.armor = 6;
         this.readyToLeavePlanet = false;
+        this.spawnX = this.spawnY = -1;
+    }
+
+    protected void setPos(int xx, int yy) {
+        setSpawnX(xx);
+        setSpawnY(yy);
+    }
+
+    protected int getSpawnX() {
+        return spawnX;
+    }
+
+    private void setSpawnX(int spawnX) {
+        this.spawnX = spawnX;
+    }
+
+    protected int getSpawnY() {
+        return spawnY;
+    }
+
+    private void setSpawnY(int spawnY) {
+        this.spawnY = spawnY;
     }
 
     protected boolean isAlive() {
@@ -41,5 +65,14 @@ public class MiningDrone {
 
     protected void notReadyToLeavePlanet() {
         this.readyToLeavePlanet = false;
+    }
+
+    protected String getResourceMined() {
+        setResourceMined(null);
+        return resourceMined;
+    }
+
+    protected void setResourceMined(String resourceMined) {
+        this.resourceMined = resourceMined;
     }
 }

@@ -1,13 +1,16 @@
 package Logic.Data;
-
+import Logic.Data.GameData;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Planet {
     private final String color;
     private final char[][] terrain;
     private final List<String> resourcesAvailable;
+    private String resourceOnTerrain;
     private int miningAttemptsRemaining;
+    private String alienType;
 
     public Planet() {
         resourcesAvailable = new ArrayList<>();
@@ -46,12 +49,16 @@ public class Planet {
         }
     }
 
-    public int getMiningAttemptsRemaining() {
+    protected int getMiningAttemptsRemaining() {
         return miningAttemptsRemaining;
     }
 
     private void setMiningAttemptsRemaining(int miningAttemptsRemaining) {
         this.miningAttemptsRemaining = miningAttemptsRemaining;
+    }
+
+    protected void minedOnce() {
+        this.miningAttemptsRemaining--;
     }
 
     protected String getColor() {
@@ -68,6 +75,30 @@ public class Planet {
 
     protected List<String> getResourcesAvailable() {
         return resourcesAvailable;
+    }
+
+    protected String getResourceOnTerrain() {
+        return resourceOnTerrain;
+    }
+
+    protected void setResourceOnTerrain() {
+        Collections.shuffle(getResourcesAvailable());
+        this.resourceOnTerrain = getResourcesAvailable().get(0);
+    }
+
+    public String getAlienType() {
+        return alienType;
+    }
+
+    public void setAlienType() {
+        int x = (int)(Math.random() * 100);
+        if(x < 25)
+            this.alienType = "BLACK";
+        if(x < 50)
+            this.alienType = "GREEN";
+        if(x < 75)
+            this.alienType = "BLUE";
+        this.alienType = "RED";
     }
 
     protected void cleanTerrain() {

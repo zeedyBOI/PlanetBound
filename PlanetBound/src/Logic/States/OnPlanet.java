@@ -12,6 +12,7 @@ public class OnPlanet extends Adapter {
 
     private void startExploration() {
         getData().cleanSpots();
+        getData().setResourceOnTerrain();
         getData().setTerrainSpots();
         getData().printTerrain();
         String resourceMined = scanMine();
@@ -24,9 +25,20 @@ public class OnPlanet extends Adapter {
     private String scanMine() {
         Scanner kb = new Scanner(System.in);
         do {
-
-        }while();
+            getData().printTerrain();
+            getData().move(kb.next().charAt(0), 'D');
+            getData().moveAlien();
+            if(getData().isAlienNextToDrone())
+                getData().fight();
+            if(getData().droneAtResource()) {
+                getData().putResourceInDrone(getData().getResourceOnTerrain());
+                getData().setDroneReadyToLeave();
+            }
+        }while(getData().isDroneReadyToReturnToShip() && getData().droneAtSpawn());
+        return getData().emptyDrone();
     }
+
+
 
     @Override
     public IState returnToOrbit() {
