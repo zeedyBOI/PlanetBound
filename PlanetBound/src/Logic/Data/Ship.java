@@ -61,6 +61,8 @@ public abstract class Ship {
         this.fuel += fuel;
     }
 
+    protected void remove1Fuel () { this.fuel--; }
+
     protected int getShield() {
         return shield;
     }
@@ -90,10 +92,13 @@ public abstract class Ship {
     }
 
     protected void addCrewMember() {
-        this.crewMembers++;
+        if(getCrewMembers() < 6)
+            this.crewMembers++;
     }
 
-    protected void killCrewMember() { this.crewMembers--; }
+    protected void killCrewMember() {
+        this.crewMembers--;
+    }
 
     protected int getArtifacts() {
         return artifacts;
@@ -104,9 +109,7 @@ public abstract class Ship {
     }
 
     protected boolean haveAllArtifacts() {
-        if(getArtifacts() == 5)
-            return true;
-        return false;
+        return getArtifacts() == 5;
     }
 
     protected void setDroneSpawnPos(int x, int y) {
@@ -149,6 +152,12 @@ public abstract class Ship {
         return getMiningDrone().getResourceMined();
     }
 
+    protected int getDroneArmor() { return getMiningDrone().getArmor(); }
+
+    protected void droneTakeDamage() { getMiningDrone().takeDamage(); }
+
+    protected void refillDroneArmor() { getMiningDrone().refillArmor();}
+
     protected void putResourceInDrone(String resource) {
         getMiningDrone().setResourceMined(resource);
     }
@@ -171,9 +180,7 @@ public abstract class Ship {
     }
 
     private boolean resourceInShip(String resource) {
-        if(resources.containsKey(resource))
-            return true;
-        return false;
+        return resources.containsKey(resource);
     }
 
     protected boolean convertResources(String from, String to) {

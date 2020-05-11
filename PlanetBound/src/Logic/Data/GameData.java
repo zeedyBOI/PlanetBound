@@ -10,6 +10,8 @@ public class GameData {
     public GameData() {
     }
 
+    public int randomD3() { return (int)(1 + Math.random() * 3); }
+
     public int randomD6() {
         return (int)(1 + Math.random() * 6);
     }
@@ -25,6 +27,8 @@ public class GameData {
     public void addCargoSpace() {
         getPlayerShip().addCargoSpace();
     }
+
+    public void loseFuel() { getPlayerShip().remove1Fuel(); }
 
     public void setPlayerShip(Ship playerShip) {
         this.playerShip = playerShip;
@@ -42,14 +46,6 @@ public class GameData {
         this.currentSector = nextSector;
     }
 
-    public void createNewSector() {
-        int x = (int)(Math.random() * 10);
-        if(x <= 3)
-            setCurrentSector(new RedSector());
-        else
-            setCurrentSector(new WhiteSector());
-    }
-
     public int getMineAttemptsLeft() { return getPlanet().getMiningAttemptsRemaining(); }
 
     public boolean inWinCondition() {
@@ -59,6 +55,8 @@ public class GameData {
     public Planet getPlanet() {
         return getCurrentSector().getPlanet();
     }
+
+    public int getCrewMembers() { return getPlayerShip().getCrewMembers(); }
 
     public void hireCrew() {
         getPlayerShip().addCrewMember();
@@ -88,6 +86,13 @@ public class GameData {
 
     public void addResourceToShip(int n, String resource) {
         getPlayerShip().addResources(n, resource);
+    }
+
+    public String loseResourcesInShip() {
+        String resource = getRandomColor();
+        int new_r_value = getResourceQuantityInShip(resource) - randomD3();
+        getResourcesInShip().replace(resource, Math.max(new_r_value, 0));
+        return resource;
     }
 
     public void purchaseDrone() {
@@ -213,13 +218,19 @@ public class GameData {
         return getPlanet().getResourceOnTerrain();
     }
 
-    public void setResourceOnTerrain() {
+    public void spawnResource() {
         getPlanet().setResourceOnTerrain();
     }
 
     public String emptyDrone() {
         return getPlayerShip().emptyDrone();
     }
+
+    public int getDroneArmor() { return getPlayerShip().getDroneArmor(); }
+
+    public void droneTakeDamage() { getPlayerShip().droneTakeDamage(); }
+
+    public void refillDroneArmor() { getPlayerShip().refillDroneArmor(); }
 
     public void putResourceInDrone(String resource) {
         getPlayerShip().putResourceInDrone(resource);
@@ -255,12 +266,38 @@ public class GameData {
     }
 
     public void fight() {
+        boolean alienKilled = false;
         do {
-
-        }while(getPlayerShip().droneIsAlive());
+            if(attackDrone(getAlienType()))
+                droneTakeDamage();
+            if(attackAlien(getAlienType()))
+                alienKilled = true;
+        }while(getPlayerShip().droneIsAlive() || !alienKilled);
     }
 
-    public String getRandomResource() {
+    public boolean attackDrone(String alienColor) {
+        int x = randomD6();
+        if(alienColor.equals("BLACK") && x == 1)
+            return true;
+        else if(alienColor.equals("GREEN") && x >= 1 && x <= 2)
+            return true;
+        else if(alienColor.equals("BLUE") && x >= 3 && x <= 5)
+            return true;
+        else return alienColor.equals("RED") && x >= 5 && x <= 6;
+    }
+
+    public boolean attackAlien(String alienColor) {
+        int x = randomD6();
+        if(alienColor.equals("BLACK") && x >= 5 && x <= 6)
+            return true;
+        else if(alienColor.equals("GREEN") && x >= 4 && x <= 6)
+            return true;
+        else if(alienColor.equals("BLUE") && x >= 3 && x <= 5)
+            return true;
+        else return alienColor.equals("RED") && x >= 1 && x <= 2;
+    }
+
+    public String getRandomColor() {
         int x = (int)(Math.random() * 100);
         if(x < 25)
             return "BLACK";

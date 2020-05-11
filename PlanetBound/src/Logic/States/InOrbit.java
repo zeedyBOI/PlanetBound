@@ -1,6 +1,8 @@
 package Logic.States;
 
 import Logic.Data.GameData;
+import Logic.Data.RedSector;
+import Logic.Data.WhiteSector;
 
 public class InOrbit extends Adapter {
     public InOrbit(GameData data) {
@@ -17,26 +19,35 @@ public class InOrbit extends Adapter {
                 getData().killCrew();
                 break;
             case 2:
-                getData().addResourceToShip(getData().randomD6(), getData().getRandomResource());
+                getData().addResourceToShip(getData().randomD6(), getData().getRandomColor());
                 break;
             case 3:
-
+                getData().loseResourcesInShip();
                 break;
             case 4:
-                //TODO:Fuel Loss
+                getData().loseFuel();
                 break;
             case 5:
-                //TODO:No Event
                 break;
             case 6:
-                //TODO:Crew Rescue
+                getData().hireCrew();
                 break;
         }
     }
 
     public void goToNextSector() {
-        if(!getData().inWinCondition())
-            getData().createNewSector();
+        if(!getData().inWinCondition() || getData().getCrewMembers() > 0)
+            createNewSector();
+        if(getData().inWinCondition() || getData().getCrewMembers() == 0)
+            exit();
+    }
+
+    public void createNewSector() {
+        int x = (int)(Math.random() * 10);
+        if(x <= 3)
+            getData().setCurrentSector(new RedSector());
+        else
+            getData().setCurrentSector(new WhiteSector());
     }
 
 
@@ -55,6 +66,13 @@ public class InOrbit extends Adapter {
 
     @Override
     public IState landOnPlanet() {
-        return new OnPlanet(getData());
+        if(getData().getMineAttemptsLeft() > 0)
+            return new OnPlanet(getData());
+        return this;
+    }
+
+    @Override
+    public IState exit() {
+        return new GameOver(getData());
     }
 }
