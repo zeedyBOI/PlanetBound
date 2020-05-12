@@ -27,7 +27,7 @@ public class Adapter implements IState{
     }
 
     @Override
-    public IState selectShip() {
+    public IState selectShip(int opt) {
         return this;
     }
 

@@ -2,7 +2,7 @@ package Logic;
 
 import Logic.Data.GameData;
 import Logic.States.Beginning;
-import Logic.States.IState;
+import Logic.States.*;
 
 public class StateChanger {
     private GameData data;
@@ -21,20 +21,21 @@ public class StateChanger {
         return currentState;
     }
 
-    public void setCurrentState(IState currentState) {
+    private void setCurrentState(IState currentState) {
         this.currentState = currentState;
     }
 
-    public boolean sectorHasSS() {
-        return getData().hasSS();
+    public void showGameState() {
+        System.out.println(getData().getPlayerShip().toString());
+        System.out.println(getData().getCurrentSector().toString());
     }
 
     public void start() {
         setCurrentState(getCurrentState().start());
     }
 
-    public void selectShip() {
-        setCurrentState(getCurrentState().selectShip());
+    public void selectShip(int opt) {
+        setCurrentState(getCurrentState().selectShip(opt));
     }
 
     public void nextTurn() {

@@ -2,7 +2,7 @@ package Logic.States;
 
 public interface IState {
     IState start();
-    IState selectShip();
+    IState selectShip(int opt);
     IState nextTurn();
     IState returnToOrbit();
     IState landOnPlanet();

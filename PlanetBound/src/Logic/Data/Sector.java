@@ -30,4 +30,12 @@ public abstract class Sector {
     public boolean hasSpaceStation() {
         return withSpaceStation;
     }
+
+    @Override
+    public String toString() {
+        return "Sector{" +
+                "withSpaceStation=" + withSpaceStation +
+                ", planet=" + planet.toString() +
+                '}';
+    }
 }

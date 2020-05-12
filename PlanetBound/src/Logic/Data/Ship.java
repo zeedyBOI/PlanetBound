@@ -13,7 +13,6 @@ public abstract class Ship {
         SHIELDS
     }
 
-    private String name;
     private int cargoSpacePerResource;
     private int fuel;
     private int shield;
@@ -24,8 +23,7 @@ public abstract class Ship {
     private MiningDrone drone;
     private Map<String, Integer> resources;
 
-    public Ship(String name, int cargoSpace, int fuel, int shield, int ammo) {
-        this.name = name;
+    public Ship(int cargoSpace, int fuel, int shield, int ammo) {
         this.cargoSpacePerResource = cargoSpace;
         this.fuel = fuel;
         this.shield = shield;
@@ -35,14 +33,6 @@ public abstract class Ship {
         this.artifacts = 0;
         this.drone = new MiningDrone();
         resources = new HashMap<>();
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     protected int getCargoSpacePerResource() {
@@ -179,6 +169,10 @@ public abstract class Ship {
         }
     }
 
+    protected void removeResource(int n, String resource) {
+        resources.replace(resource, (resources.get(resource)) - n);
+    }
+
     private boolean resourceInShip(String resource) {
         return resources.containsKey(resource);
     }
@@ -198,8 +192,8 @@ public abstract class Ship {
     public String listCrew() {
         Officers[] off = Officers.values();
         StringBuilder sb = new StringBuilder();
-        for(int i = 1; i <= crewMembers; i++){
-            sb.append(off[i]).append('\n');
+        for(int i = 0; i < crewMembers; i++){
+            sb.append(off[i]).append(", ");
         }
         return sb.toString();
     }
@@ -207,7 +201,7 @@ public abstract class Ship {
     public String listResources() {
         StringBuilder sb = new StringBuilder();
         for (String r: resources.keySet()) {
-            sb.append(r).append(": ").append(resources.get(r).toString());
+            sb.append(r).append(": ").append(resources.get(r));
         }
         return sb.toString();
     }
@@ -215,7 +209,6 @@ public abstract class Ship {
     @Override
     public String toString() {
         return "Ship{" +
-                "name='" + name + '\'' +
                 ", cargoSpacePerResource=" + cargoSpacePerResource +
                 ", fuel=" + fuel +
                 ", shield=" + shield +

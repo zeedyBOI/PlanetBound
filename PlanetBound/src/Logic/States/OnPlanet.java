@@ -14,35 +14,32 @@ public class OnPlanet extends Adapter {
         getData().cleanSpots();
         getData().spawnResource();
         getData().setTerrainSpots();
-        getData().printTerrain();
         String resourceMined = scanMine();
+        getData().putResourceInDrone(resourceMined);
     }
 
-
-
-
-    //!private void scanMine() {
     private String scanMine() {
         Scanner kb = new Scanner(System.in);
+        getData().spawnAlien();
         do {
-            getData().printTerrain();
-            getData().spawnAlien();
-            getData().move(kb.next().charAt(0), 'D');
+            System.out.println(getData().printTerrain());
+            getData().move(kb.next().toUpperCase().charAt(0), 'D');
             getData().moveAlien();
-            if(getData().isAlienNextToDrone())
+            if(getData().isAlienNextToDrone()) {
                 getData().fight();
+                getData().spawnAlien();
+            }
             if(getData().droneAtResource()) {
                 getData().putResourceInDrone(getData().getResourceOnTerrain());
                 getData().setDroneReadyToLeave();
             }
-        }while(getData().isDroneReadyToReturnToShip() && getData().droneAtSpawn());
+        }while(!getData().isDroneReadyToReturnToShip() && !getData().droneAtSpawn());
         return getData().emptyDrone();
     }
 
-
-
     @Override
     public IState returnToOrbit() {
+        getData().addResourceToShip(getData().emptyDrone());
         return new InOrbit(getData());
     }
 

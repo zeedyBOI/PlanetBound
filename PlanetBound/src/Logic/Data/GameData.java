@@ -84,8 +84,16 @@ public class GameData {
         return getPlayerShip().getResources();
     }
 
+    public void addResourceToShip(String resource) {
+        getPlayerShip().addResources(randomD6(), resource);
+    }
+
     public void addResourceToShip(int n, String resource) {
         getPlayerShip().addResources(n, resource);
+    }
+
+    public void removeResourcesFromShip(int n, String resource) {
+        getPlayerShip().removeResource(n, resource);
     }
 
     public String loseResourcesInShip() {
@@ -116,14 +124,14 @@ public class GameData {
     }
 
     public void setTerrainSpots() {
-        int Sx = randomD6();
-        int Sy = randomD6();
+        int Sx = randomD6() - 1;
+        int Sy = randomD6() - 1;
         int Dx, Dy, Ax, Ay;
         do {
-            Dx = randomD6();
-            Dy = randomD6();
-            Ax = randomD6();
-            Ay = randomD6();
+            Dx = randomD6() - 1;
+            Dy = randomD6() - 1;
+            Ax = randomD6() - 1;
+            Ay = randomD6() - 1;
         }while(Dx == Sx && Dy == Sy || Dx == Ax && Dy == Ay || Ax == Sx && Ay == Sy);
         setSpot(Sx, Sy, 'S');
         setSpot(Dx, Dy, 'D');
@@ -245,14 +253,21 @@ public class GameData {
     }
 
     public void moveAlien() {
-        if(getPosX('A') < getPosX('D'))
+        if(getPosX('A') < getPosX('D')) {
             moveRight('A');
-        else if(getPosX('A') > getPosX('D'))
+            return;
+        }
+        if(getPosX('A') > getPosX('D')) {
             moveLeft('A');
-        else if(getPosY('A') < getPosY('D'))
+            return;
+        }
+        if(getPosY('A') < getPosY('D')) {
             moveDown('A');
-        else if(getPosY('A') > getPosY('D'))
+            return;
+        }
+        if(getPosY('A') > getPosY('D')) {
             moveUp('A');
+        }
     }
 
     public boolean isAlienNextToDrone() {

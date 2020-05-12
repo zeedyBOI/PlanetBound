@@ -12,22 +12,13 @@ public class WaitShipSelection extends Adapter{
     }
 
     @Override
-    public IState selectShip() {
-        int opt = showShipOptions();
+    public IState selectShip(int opt) {
         if(opt == 1) {
-            getData().setPlayerShip(new Mining("Mining ship"));
+            getData().setPlayerShip(new Mining());
             return new InOrbit(getData());
         }
         if(opt == 2)
-            getData().setPlayerShip(new Military("Military Ship"));
+            getData().setPlayerShip(new Military());
         return this;
-    }
-
-    private int showShipOptions() {
-        Scanner kb = new Scanner(System.in);
-        System.out.println("Select your Ship:");
-        System.out.println("1 - Mining Ship");
-        System.out.println("2 - Military Ship");
-        return kb.nextInt();
     }
 }

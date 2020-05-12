@@ -12,7 +12,7 @@ public class VisitSS extends Adapter {
         super(data);
     }
 
-    public Map<String, Integer> getShipResources() {
+    private Map<String, Integer> getShipResources() {
         return getData().getResourcesInShip();
     }
 
@@ -21,7 +21,7 @@ public class VisitSS extends Adapter {
     }
 
     public boolean hireCrewMember(String officer) {
-        if(haveEnoughResources(1)){
+        if(haveEnoughResources(1, 1, 1, 1)){
             getData().hireCrew();
             return true;
         }
@@ -30,7 +30,7 @@ public class VisitSS extends Adapter {
 
     public boolean upgradeCargoSpace() {
         Ship pShip = getPlayerShip();
-        if(haveEnoughResources(2)) {
+        if(haveEnoughResources(3, 3, 3, 3)) {
             if (pShip instanceof Mining) {
                 if (getData().getCargoSpacePerResource() < 24) {
                     getData().upgradeCargoSpace();
@@ -47,7 +47,7 @@ public class VisitSS extends Adapter {
     }
 
     public boolean purchaseMiningDrone() {
-        if(haveEnoughResources(2)) {
+        if(haveEnoughResources(2, 2, 2, 2)) {
             getData().purchaseDrone();
             return true;
         }
@@ -55,26 +55,64 @@ public class VisitSS extends Adapter {
     }
 
     public boolean upgradeWeapons() {
-        if(haveEnoughResources(2)) {
+        if(haveEnoughResources(2, 2, 2, 2)) {
             getData().upgradeWeapons();
             return true;
         }
         return false;
     }
 
-    private boolean haveEnoughResources(int needed) {
-        Ship pShip = getPlayerShip();
-        if(getData().getResourceQuantityInShip("BLUE") < needed)
-            System.out.println("Not enough blue resources");
-        if(getData().getResourceQuantityInShip("RED") < needed)
+    private boolean haveEnoughResources(int r, int g, int b, int black) {
+        if(getData().getResourceQuantityInShip("RED") < r)
             System.out.println("Not enough red resources");
-        if(getData().getResourceQuantityInShip("GREEN") < needed)
+        if(getData().getResourceQuantityInShip("GREEN") < g)
             System.out.println("Not enough green resources");
-        if(getData().getResourceQuantityInShip("BLACK") >= needed) {
+        if(getData().getResourceQuantityInShip("BLUE") < b)
+            System.out.println("Not enough blue resources");
+        if(getData().getResourceQuantityInShip("BLACK") >= black) {
             return true;
         }
         System.out.println("Not enough Black resources");
         return false;
+    }
+
+    private void spendResources(int r, int g, int b, int black) {
+
+    }
+
+    public void convertToFuel() {
+        if(enoughResourcesForFuel()) {
+            getData().removeResourcesFromShip(1, "RED");
+            getData().removeResourcesFromShip(1, "BLUE");
+            getData().removeResourcesFromShip(1, "BLACK");
+        }
+    }
+
+    public boolean enoughResourcesForFuel() {
+        return haveEnoughResources(1, 0, 1, 1);
+    }
+
+    public void convertToAmmo() {
+        if(enoughResourcesForAmmo()) {
+            getData().removeResourcesFromShip(1, "RED");
+            getData().removeResourcesFromShip(1, "BLACK");
+        }
+    }
+
+    public boolean enoughResourcesForAmmo() {
+        return haveEnoughResources(1, 0, 0, 1);
+    }
+
+    public void convertToShield() {
+        if(enoughResourcesForShield()) {
+            getData().removeResourcesFromShip(1, "GREEN");
+            getData().removeResourcesFromShip(1, "BLUE");
+            getData().removeResourcesFromShip(1, "BLACK");
+        }
+    }
+
+    public boolean enoughResourcesForShield() {
+        return haveEnoughResources(0 ,1, 1, 1);
     }
 
     @Override

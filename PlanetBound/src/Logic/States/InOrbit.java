@@ -7,13 +7,14 @@ import Logic.Data.WhiteSector;
 public class InOrbit extends Adapter {
     public InOrbit(GameData data) {
         super(data);
+        createNewSector();
     }
 
-    public void applyEvent() {
+    private void applyEvent() {
         applyEvent(getData().randomD6());
     }
 
-    public void applyEvent(int idEvent) {
+    private void applyEvent(int idEvent) {
         switch (idEvent) {
             case 1:
                 getData().killCrew();
@@ -35,14 +36,14 @@ public class InOrbit extends Adapter {
         }
     }
 
-    public void goToNextSector() {
+    private void goToNextSector() {
         if(!getData().inWinCondition() || getData().getCrewMembers() > 0)
             createNewSector();
         if(getData().inWinCondition() || getData().getCrewMembers() == 0)
             exit();
     }
 
-    public void createNewSector() {
+    private void createNewSector() {
         int x = (int)(Math.random() * 10);
         if(x <= 3)
             getData().setCurrentSector(new RedSector());

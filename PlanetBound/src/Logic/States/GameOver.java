@@ -7,7 +7,7 @@ public class GameOver extends Adapter{
         super(data);
     }
 
-    public boolean won() {
+    private boolean won() {
         return getData().inWinCondition();
     }
 
