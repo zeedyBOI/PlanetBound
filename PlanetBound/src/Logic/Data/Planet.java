@@ -160,7 +160,7 @@ public class Planet {
     protected String listResources() {
         StringBuilder sb = new StringBuilder();
         for (String r : resourcesAvailable) {
-            sb.append(r).append('\n');
+            sb.append(r).append(" ");
         }
         return sb.toString();
     }
@@ -179,8 +179,8 @@ public class Planet {
     @Override
     public String toString() {
         return "Planet{" +
-                "color='" + color + '\'' +
-                "Resources" + listResources() +
+                "color='" + color + "," +
+                "Resources:" + listResources() +
                 '}';
     }
 }

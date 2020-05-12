@@ -7,8 +7,15 @@ public class GameOver extends Adapter{
         super(data);
     }
 
-    private boolean won() {
+    public boolean won() {
         return getData().inWinCondition();
+    }
+
+    public void reason() {
+        if(getData().getFuel() == 0)
+            System.out.println("You ran out of fuel!");
+        if(getData().getCrewMembers() == 0)
+            System.out.println("All your crew died!");
     }
 
     @Override

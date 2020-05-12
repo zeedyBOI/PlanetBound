@@ -4,13 +4,13 @@ import java.util.*;
 
 public abstract class Ship {
 
-    enum Officers {
+    public enum Officers {
         CAPTAIN,
-        NAVIGATION,
-        EXPLORATION,
-        CARGO_HOLD,
-        WEAPONS,
-        SHIELDS
+        NAVIGATION_OFFICER,
+        EXPLORATION_OFFICER,
+        CARGO_HOLD_OFFICER,
+        WEAPONS_OFFICER,
+        SHIELDS_OFFICER
     }
 
     private int cargoSpacePerResource;
@@ -81,9 +81,12 @@ public abstract class Ship {
         return crewMembers;
     }
 
-    protected void addCrewMember() {
-        if(getCrewMembers() < 6)
+    protected boolean addCrewMember() {
+        if(getCrewMembers() < 6) {
             this.crewMembers++;
+            return true;
+        }
+        return false;
     }
 
     protected void killCrewMember() {
@@ -157,7 +160,9 @@ public abstract class Ship {
     }
 
     protected int getResourceQuantity(String resource) {
-        return resources.get(resource);
+        if(resourceInShip(resource))
+            return resources.get(resource);
+        return 0;
     }
 
     protected void addResources(int nR, String resource) {
@@ -173,7 +178,7 @@ public abstract class Ship {
         resources.replace(resource, (resources.get(resource)) - n);
     }
 
-    private boolean resourceInShip(String resource) {
+    protected boolean resourceInShip(String resource) {
         return resources.containsKey(resource);
     }
 
@@ -200,8 +205,14 @@ public abstract class Ship {
 
     public String listResources() {
         StringBuilder sb = new StringBuilder();
-        for (String r: resources.keySet()) {
-            sb.append(r).append(": ").append(resources.get(r));
+        if(resources.isEmpty()) {
+            sb.append("Empty");
+        }
+        else {
+            sb.append('\n');
+            for (String r : resources.keySet()) {
+                sb.append(r).append(": ").append(resources.get(r)).append('\n');
+            }
         }
         return sb.toString();
     }
@@ -209,13 +220,13 @@ public abstract class Ship {
     @Override
     public String toString() {
         return "Ship{" +
-                ", cargoSpacePerResource=" + cargoSpacePerResource +
+                "cargoSpacePerResource=" + cargoSpacePerResource +
                 ", fuel=" + fuel +
                 ", shield=" + shield +
                 ", ammo=" + ammo +
                 ", crewMembers=" + crewMembers +
                 ", crew=" + listCrew() +
-                ", resources=" + listResources() +
+                "\nResources=" + listResources() +
                 '}';
     }
 }

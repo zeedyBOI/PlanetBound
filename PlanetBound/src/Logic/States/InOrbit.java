@@ -2,9 +2,21 @@ package Logic.States;
 
 import Logic.Data.GameData;
 import Logic.Data.RedSector;
+import Logic.Data.Ship;
 import Logic.Data.WhiteSector;
 
+import javax.swing.*;
+
 public class InOrbit extends Adapter {
+    enum Events {
+        CREW_DEATH,
+        SALVAGE_SHIP,
+        CARGO_LOSS,
+        FUEL_LOSS,
+        NO_EVENT,
+        SHIP_RESCUE
+    };
+
     public InOrbit(GameData data) {
         super(data);
         createNewSector();
@@ -15,30 +27,43 @@ public class InOrbit extends Adapter {
     }
 
     private void applyEvent(int idEvent) {
+        Ship.Officers[] off = Ship.Officers.values();
+        Events[] e = Events.values();
+        System.out.println(e[idEvent - 1]);
         switch (idEvent) {
             case 1:
+                System.out.println("Your " + off[getData().getCrewMembers() - 1] + " died");
                 getData().killCrew();
                 break;
             case 2:
-                getData().addResourceToShip(getData().randomD6(), getData().getRandomColor());
+                int n = getData().randomD6();
+                String color = getData().getRandomColor();
+                System.out.println("You found " + n + " of " + color + "resource");
+                getData().addResourceToShip(n, color);
                 break;
             case 3:
-                getData().loseResourcesInShip();
+                System.out.println("You lost " + getData().loseResourcesInShip());
                 break;
             case 4:
+                System.out.println("You lost fuel");
                 getData().loseFuel();
                 break;
             case 5:
                 break;
             case 6:
-                getData().hireCrew();
+                if(getData().hireCrew())
+                    System.out.println("You found a " + off[getData().getCrewMembers()] + "in a destroyed ship");
+                else
+                    System.out.println("You found a ship but didnt have space to receive the officer");
                 break;
         }
     }
 
     private void goToNextSector() {
-        if(!getData().inWinCondition() || getData().getCrewMembers() > 0)
+        if(!getData().inWinCondition() || getData().getCrewMembers() > 0) {
             createNewSector();
+            getData().loseFuel();
+        }
         if(getData().inWinCondition() || getData().getCrewMembers() == 0)
             exit();
     }
@@ -50,8 +75,6 @@ public class InOrbit extends Adapter {
         else
             getData().setCurrentSector(new WhiteSector());
     }
-
-
 
     @Override
     public IState nextTurn() {

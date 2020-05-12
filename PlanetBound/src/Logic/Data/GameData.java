@@ -30,6 +30,8 @@ public class GameData {
 
     public void loseFuel() { getPlayerShip().remove1Fuel(); }
 
+    public int getFuel() { return getPlayerShip().getFuel(); }
+
     public void setPlayerShip(Ship playerShip) {
         this.playerShip = playerShip;
     }
@@ -58,8 +60,8 @@ public class GameData {
 
     public int getCrewMembers() { return getPlayerShip().getCrewMembers(); }
 
-    public void hireCrew() {
-        getPlayerShip().addCrewMember();
+    public boolean hireCrew() {
+        return getPlayerShip().addCrewMember();
     }
 
     public void killCrew() { getPlayerShip().killCrewMember(); }
@@ -98,9 +100,13 @@ public class GameData {
 
     public String loseResourcesInShip() {
         String resource = getRandomColor();
-        int new_r_value = getResourceQuantityInShip(resource) - randomD3();
-        getResourcesInShip().replace(resource, Math.max(new_r_value, 0));
-        return resource;
+        if(getPlayerShip().resourceInShip(resource)) {
+            int new_r_value = getResourceQuantityInShip(resource) - randomD3();
+            getResourcesInShip().replace(resource, Math.max(new_r_value, 0));
+            return resource;
+        }
+        else
+            return null;
     }
 
     public void purchaseDrone() {

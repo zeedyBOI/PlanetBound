@@ -64,16 +64,12 @@ public class VisitSS extends Adapter {
 
     private boolean haveEnoughResources(int r, int g, int b, int black) {
         if(getData().getResourceQuantityInShip("RED") < r)
-            System.out.println("Not enough red resources");
+            return false;
         if(getData().getResourceQuantityInShip("GREEN") < g)
-            System.out.println("Not enough green resources");
+            return false;
         if(getData().getResourceQuantityInShip("BLUE") < b)
-            System.out.println("Not enough blue resources");
-        if(getData().getResourceQuantityInShip("BLACK") >= black) {
-            return true;
-        }
-        System.out.println("Not enough Black resources");
-        return false;
+            return false;
+        return getData().getResourceQuantityInShip("BLACK") >= black;
     }
 
     private void spendResources(int r, int g, int b, int black) {

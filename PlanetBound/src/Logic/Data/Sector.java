@@ -35,7 +35,7 @@ public abstract class Sector {
     public String toString() {
         return "Sector{" +
                 "withSpaceStation=" + withSpaceStation +
-                ", planet=" + planet.toString() +
+                ", " + planet.toString() +
                 '}';
     }
 }

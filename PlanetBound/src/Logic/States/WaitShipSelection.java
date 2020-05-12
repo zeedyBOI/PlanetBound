@@ -19,6 +19,6 @@ public class WaitShipSelection extends Adapter{
         }
         if(opt == 2)
             getData().setPlayerShip(new Military());
-        return this;
+        return new InOrbit(getData());
     }
 }

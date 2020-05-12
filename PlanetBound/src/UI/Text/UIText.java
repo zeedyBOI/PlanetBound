@@ -1,6 +1,8 @@
 package UI.Text;
 
+import Logic.Data.GameData;
 import Logic.StateChanger;
+import Logic.States.GameOver;
 import Logic.States.InOrbit;
 import Logic.States.VisitSS;
 
@@ -19,6 +21,9 @@ public class UIText {
     public void start() {
         machine.start();
         showShipOptions();
+        do {
+            listOptions();
+        }while(!shutdown);
     }
 
     private void showShipOptions() {
@@ -31,11 +36,11 @@ public class UIText {
             x = kb.nextInt();
         }while(x < 1 || x > 2);
         machine.selectShip(x);
-        listOptions();
     }
 
     public void listOptions() {
-        machine.showGameState();
+        if(machine.getCurrentState() instanceof InOrbit)
+            machine.showGameState();
         System.out.println("Options:");
         if(machine.getCurrentState() instanceof InOrbit) {
             System.out.println("1 - Go to Planet and Explore it");
@@ -54,17 +59,39 @@ public class UIText {
         else if(machine.getCurrentState() instanceof VisitSS) {
             if(((VisitSS) machine.getCurrentState()).enoughResourcesForAmmo())
                 System.out.println("1 - Make Ammo");
+            else
+                System.out.println("Not enough resources to convert to ammo (1 BLACK, 1 BLUE)");
             if(((VisitSS) machine.getCurrentState()).enoughResourcesForFuel())
                 System.out.println("2 - Make Fuel cells");
+            else
+                System.out.println("Not enough resources to convert to ammo (1 BLACK, 1 BLUE, 1 GREEN)");
             if(((VisitSS) machine.getCurrentState()).enoughResourcesForShield())
                 System.out.println("3 - Make Shield cells");
+            else
+                System.out.println("Not enough resources to convert to ammo (1 BLACK, 1 BLUE, 1 GREEN)");
+            System.out.println("4 - Return to Orbit");
             System.out.print("Your choice: ");
             switch (kb.nextInt()) {
                 case 1 -> ((VisitSS) machine.getCurrentState()).convertToAmmo();
                 case 2 -> ((VisitSS) machine.getCurrentState()).convertToFuel();
                 case 3 -> ((VisitSS) machine.getCurrentState()).convertToShield();
+                case 4 -> machine.returnToOrbit();
                 default -> System.out.println("Invalid Option!");
             }
+        }
+        else if(machine.getCurrentState() instanceof GameOver) {
+            if(((GameOver) machine.getCurrentState()).won()) {
+                System.out.println("You reached your new Home");
+            }
+            else
+                ((GameOver) machine.getCurrentState()).reason();
+            System.out.println("1 - Restart Game");
+            System.out.println("2 - Exit Game");
+            switch (kb.nextInt()) {
+                case 1 -> machine.start();
+                case 2 -> shutdown = true;
+            }
+
         }
     }
 }
