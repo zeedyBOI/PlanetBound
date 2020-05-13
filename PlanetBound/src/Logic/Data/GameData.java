@@ -24,10 +24,6 @@ public class GameData {
         return getPlayerShip().getCargoSpacePerResource();
     }
 
-    public void addCargoSpace() {
-        getPlayerShip().addCargoSpace();
-    }
-
     public void loseFuel() { getPlayerShip().remove1Fuel(); }
 
     public int getFuel() { return getPlayerShip().getFuel(); }
@@ -259,31 +255,47 @@ public class GameData {
     }
 
     public void moveAlien() {
-        if(getPosX('A') < getPosX('D')) {
-            moveRight('A');
-            return;
-        }
-        if(getPosX('A') > getPosX('D')) {
-            moveLeft('A');
-            return;
-        }
-        if(getPosY('A') < getPosY('D')) {
+        if(getPosX('A') < getPosX('D') && getPosY('A') == getPosY('D')) {
             moveDown('A');
             return;
         }
-        if(getPosY('A') > getPosY('D')) {
+        if(getPosX('A') > getPosX('D') && getPosY('A') == getPosY('D')) {
             moveUp('A');
+            return;
+        }
+        if(getPosY('A') < getPosY('D') && getPosX('A') == getPosX('D')) {
+            moveRight('A');
+            return;
+        }
+        if(getPosY('A') > getPosY('D') && getPosX('A') == getPosX('D')) {
+            moveLeft('A');
+            return;
+        }
+        if(getPosX('A') < getPosX('D')) {
+            moveDown('A');
+            return;
+        }
+        if(getPosX('A') > getPosX('D')) {
+            moveUp('A');
+            return;
+        }
+        if(getPosY('A') < getPosY('D')) {
+            moveRight('A');
+            return;
+        }
+        if(getPosY('A') > getPosY('D')) {
+            moveLeft('A');
         }
     }
 
     public boolean isAlienNextToDrone() {
-        if(getPosX('A') == getPosX('D') - 1)
+        if(getPosX('A') == getPosX('D') - 1 && getPosY('A') == getPosY('D'))
             return true;
-        else if(getPosX('A') == getPosX('D') + 1)
+        else if(getPosX('A') == getPosX('D') + 1 && getPosY('A') == getPosY('D'))
             return true;
-        else if(getPosY('A') == getPosY('D') - 1)
+        else if(getPosY('A') == getPosY('D') - 1 && getPosX('A') == getPosX('D'))
             return true;
-        else return getPosY('A') == getPosY('D') + 1;
+        else return getPosY('A') == getPosY('D') + 1 && getPosX('A') == getPosX('D');
     }
 
     public void fight() {
@@ -293,7 +305,7 @@ public class GameData {
                 droneTakeDamage();
             if(attackAlien(getAlienType()))
                 alienKilled = true;
-        }while(getPlayerShip().droneIsAlive() || !alienKilled);
+        }while(!alienKilled || !getPlayerShip().droneIsAlive());
     }
 
     public boolean attackDrone(String alienColor) {

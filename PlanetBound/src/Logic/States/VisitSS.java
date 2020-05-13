@@ -38,7 +38,7 @@ public class VisitSS extends Adapter {
                 }
             } else {
                 if (getData().getCargoSpacePerResource() < 12) {
-                    getData().addCargoSpace();
+                    getData().upgradeCargoSpace();
                     return true;
                 }
             }

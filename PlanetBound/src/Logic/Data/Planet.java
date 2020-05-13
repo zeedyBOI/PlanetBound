@@ -130,31 +130,39 @@ public class Planet {
     }
 
     protected void moveDown(char icon) {
+        char c;
         int x = getPosX(icon);
         int y = getPosY(icon);
-        setPos(x, y, '_');
-        setPos(++x, y, icon);
+        if((c = terrain[x + 1][y]) == '_')
+            setPos(x, y, c);
+            setPos(++x, y, icon);
     }
 
     protected void moveLeft(char icon) {
+        char c;
         int x = getPosX(icon);
         int y = getPosY(icon);
-        setPos(x, y, '_');
-        setPos(x, --y, icon);
+        if((c = terrain[x][y - 1]) == '_')
+            setPos(x, y, c);
+            setPos(x, --y, icon);
     }
 
     protected void moveUp(char icon) {
+        char c;
         int x = getPosX(icon);
         int y = getPosY(icon);
-        setPos(x, y, '_');
-        setPos(--x, y, icon);
+        if((c = terrain[x - 1][y]) == '_')
+            setPos(x, y, c);
+            setPos(--x, y, icon);
     }
 
     protected void moveRight(char icon) {
+        char c;
         int x = getPosX(icon);
         int y = getPosY(icon);
-        setPos(x, y, '_');
-        setPos(x, ++y, icon);
+        if((c = terrain[x][y + 1]) == '_')
+            setPos(x, y, c);
+            setPos(x, ++y, icon);
     }
 
     protected String listResources() {

@@ -224,8 +224,11 @@ public abstract class Ship {
                 ", fuel=" + fuel +
                 ", shield=" + shield +
                 ", ammo=" + ammo +
+                ", weaponDamage=" + weaponDamage +
                 ", crewMembers=" + crewMembers +
                 ", crew=" + listCrew() +
+                ", artifacts=" + artifacts +
+                ", drone=" + getMiningDrone().toString() +
                 "\nResources=" + listResources() +
                 '}';
     }

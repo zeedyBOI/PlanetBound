@@ -63,6 +63,8 @@ public class InOrbit extends Adapter {
         if(!getData().inWinCondition() || getData().getCrewMembers() > 0) {
             createNewSector();
             getData().loseFuel();
+            getData().upgradeCargoSpace();
+            getData().upgradeWeapons();
         }
         if(getData().inWinCondition() || getData().getCrewMembers() == 0)
             exit();

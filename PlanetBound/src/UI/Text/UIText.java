@@ -50,10 +50,20 @@ public class UIText {
             }
             System.out.print("Your choice: ");
             switch (kb.nextInt()) {
-                case 1 -> machine.landOnPlanet();
-                case 2 -> machine.nextTurn();
-                case 3 -> machine.visitSS();
-                default -> System.out.println("Invalid Option!");
+                case 1:
+                    machine.landOnPlanet();
+                    break;
+                case 2:
+                    machine.nextTurn();
+                    break;
+                case 3:
+                    if(machine.sectorHasSS()) {
+                        machine.visitSS();
+                        break;
+                    }
+                default:
+                    System.out.println("Invalid Option!");
+                    break;
             }
         }
         else if(machine.getCurrentState() instanceof VisitSS) {
@@ -72,11 +82,21 @@ public class UIText {
             System.out.println("4 - Return to Orbit");
             System.out.print("Your choice: ");
             switch (kb.nextInt()) {
-                case 1 -> ((VisitSS) machine.getCurrentState()).convertToAmmo();
-                case 2 -> ((VisitSS) machine.getCurrentState()).convertToFuel();
-                case 3 -> ((VisitSS) machine.getCurrentState()).convertToShield();
-                case 4 -> machine.returnToOrbit();
-                default -> System.out.println("Invalid Option!");
+                case 1:
+                    ((VisitSS) machine.getCurrentState()).convertToAmmo();
+                    break;
+                case 2:
+                    ((VisitSS) machine.getCurrentState()).convertToFuel();
+                    break;
+                case 3:
+                    ((VisitSS) machine.getCurrentState()).convertToShield();
+                    break;
+                case 4:
+                    machine.returnToOrbit();
+                    break;
+                default:
+                    System.out.println("Invalid Option!");
+                    break;
             }
         }
         else if(machine.getCurrentState() instanceof GameOver) {

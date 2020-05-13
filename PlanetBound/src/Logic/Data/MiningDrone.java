@@ -75,4 +75,12 @@ public class MiningDrone {
     protected void setResourceMined(String resourceMined) {
         this.resourceMined = resourceMined;
     }
+
+    @Override
+    public String toString() {
+        return "MiningDrone{" +
+                "alive=" + health +
+                ", armor=" + armor +
+                '}';
+    }
 }

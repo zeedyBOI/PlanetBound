@@ -24,7 +24,13 @@ public class OnPlanet extends Adapter {
         do {
             System.out.println(getData().printTerrain());
             getData().move(kb.next().toUpperCase().charAt(0), 'D');
+            if(getData().isAlienNextToDrone()) {
+                getData().fight();
+                getData().spawnAlien();
+            }
+            System.out.println(getData().printTerrain());
             getData().moveAlien();
+            System.out.println(getData().printTerrain());
             if(getData().isAlienNextToDrone()) {
                 getData().fight();
                 getData().spawnAlien();

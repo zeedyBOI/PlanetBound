@@ -17,6 +17,10 @@ public class StateChanger {
         return data;
     }
 
+    public boolean sectorHasSS() {
+        return getData().hasSS();
+    }
+
     public IState getCurrentState() {
         return currentState;
     }
