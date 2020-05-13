@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="PlanetBound:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/PlanetBound_jar</output-path>
+    <root id="archive" name="PlanetBound.jar">
+      <element id="module-output" name="PlanetBound" />
+    </root>
+  </artifact>
+</component>
