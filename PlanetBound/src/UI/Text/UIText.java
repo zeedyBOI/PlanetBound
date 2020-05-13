@@ -4,6 +4,7 @@ import Logic.Data.GameData;
 import Logic.StateChanger;
 import Logic.States.GameOver;
 import Logic.States.InOrbit;
+import Logic.States.OnPlanet;
 import Logic.States.VisitSS;
 
 import java.util.Scanner;
@@ -36,9 +37,15 @@ public class UIText {
             x = kb.nextInt();
         }while(x < 1 || x > 2);
         machine.selectShip(x);
+        ((InOrbit) machine.getCurrentState()).createNewSector();
     }
 
     public void listOptions() {
+        if(machine.getCurrentState() instanceof OnPlanet) {
+            ((OnPlanet) machine.getCurrentState()).startExploration();
+            machine.returnToOrbit();
+            return;
+        }
         if(machine.getCurrentState() instanceof InOrbit)
             machine.showGameState();
         System.out.println("Options:");
@@ -82,21 +89,11 @@ public class UIText {
             System.out.println("4 - Return to Orbit");
             System.out.print("Your choice: ");
             switch (kb.nextInt()) {
-                case 1:
-                    ((VisitSS) machine.getCurrentState()).convertToAmmo();
-                    break;
-                case 2:
-                    ((VisitSS) machine.getCurrentState()).convertToFuel();
-                    break;
-                case 3:
-                    ((VisitSS) machine.getCurrentState()).convertToShield();
-                    break;
-                case 4:
-                    machine.returnToOrbit();
-                    break;
-                default:
-                    System.out.println("Invalid Option!");
-                    break;
+                case 1 -> ((VisitSS) machine.getCurrentState()).convertToAmmo();
+                case 2 -> ((VisitSS) machine.getCurrentState()).convertToFuel();
+                case 3 -> ((VisitSS) machine.getCurrentState()).convertToShield();
+                case 4 -> machine.returnToOrbit();
+                default -> System.out.println("Invalid Option!");
             }
         }
         else if(machine.getCurrentState() instanceof GameOver) {

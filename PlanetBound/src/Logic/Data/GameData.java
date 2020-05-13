@@ -24,9 +24,23 @@ public class GameData {
         return getPlayerShip().getCargoSpacePerResource();
     }
 
-    public void loseFuel() { getPlayerShip().remove1Fuel(); }
+    public void loseFuel() {
+        loseFuel(1);
+    }
+
+    public void loseFuel(int n) { getPlayerShip().removeFuel(n); }
 
     public int getFuel() { return getPlayerShip().getFuel(); }
+
+    public int getShield() { return getPlayerShip().getShield(); }
+
+    public void loseShield() { loseShield(1); }
+
+    public void loseShield(int n) { getPlayerShip().loseShield(n); }
+
+    public void addShield() { addShield(1); }
+
+    public void addShield(int n) {getPlayerShip().addShield(n);}
 
     public void setPlayerShip(Ship playerShip) {
         this.playerShip = playerShip;
@@ -82,8 +96,15 @@ public class GameData {
         return getPlayerShip().getResources();
     }
 
-    public void addResourceToShip(String resource) {
-        getPlayerShip().addResources(randomD6(), resource);
+    public String addResourceToShip(String resource) {
+        int n = randomD6();
+        if (!resource.equals("PINK")) {
+            getPlayerShip().addResources(n, resource);
+            return "You mined " + n + " " + resource;
+        }
+        getPlayerShip().addArtifacts();
+        getPlanet().getResourcesAvailable().remove("PINK");
+        return "YOU FOUND AN ARTIFACT";
     }
 
     public void addResourceToShip(int n, String resource) {
@@ -136,6 +157,8 @@ public class GameData {
             Ay = randomD6() - 1;
         }while(Dx == Sx && Dy == Sy || Dx == Ax && Dy == Ay || Ax == Sx && Ay == Sy);
         setSpot(Sx, Sy, 'S');
+        getPlanet().setPosXResourceOnTerrain(Sx);
+        getPlanet().setPosYResourceOnTerrain(Sy);
         setSpot(Dx, Dy, 'D');
         setDroneSpawnPos(Dx, Dy);
         setSpot(Ax, Ay, 'A');
@@ -165,26 +188,42 @@ public class GameData {
         getPlanet().cleanTerrain();
     }
 
+    public boolean posAvailable(int x, int y) {
+        return getPlanet().posAvailable(x, y);
+    }
+
     public void setPosOnTerrain(int x, int y, char icon) {
         getPlanet().setPos(x, y, icon);
     }
 
-    public void move(char key_pressed, char icon) {
+    public boolean move(char key_pressed, char icon) {
         switch (key_pressed) {
             case 'W':
-                moveUp(icon);
-                break;
+                if(getPosX('D') > 0) {
+                    moveUp(icon);
+                    return true;
+                }
+                return false;
             case 'S':
-                moveDown(icon);
-                break;
+                if(getPosX('D') < getTerrain().length - 1) {
+                    moveDown(icon);
+                    return true;
+                }
+                return false;
             case 'A':
-                moveLeft(icon);
-                break;
+                if(getPosY('D') > 0) {
+                    moveLeft(icon);
+                    return true;
+                }
+                return false;
             case 'D':
-                moveRight(icon);
-                break;
+                if(getPosY('D') < getTerrain()[0].length - 1) {
+                    moveRight(icon);
+                    return true;
+                }
+                return false;
             default:
-                break;
+                return false;
         }
     }
 
@@ -213,7 +252,7 @@ public class GameData {
     }
 
     public boolean droneAtResource() {
-        return getPosX('D') == getPosX('S') && getPosY('D') == getPosY('S');
+        return getPosX('D') == getPlanet().getPosXResourceOnTerrain() && getPosY('D') == getPlanet().getPosYResourceOnTerrain();
     }
 
     public boolean isDroneReadyToReturnToShip() {
@@ -232,8 +271,8 @@ public class GameData {
         getPlanet().setResourceOnTerrain();
     }
 
-    public String emptyDrone() {
-        return getPlayerShip().emptyDrone();
+    public String getResourceMined() {
+        return getPlayerShip().getResourceMined();
     }
 
     public int getDroneArmor() { return getPlayerShip().getDroneArmor(); }
@@ -252,6 +291,18 @@ public class GameData {
 
     public void spawnAlien() {
         getPlanet().setAlienType();
+    }
+
+    public void spawnNewAlien() {
+        int x = getPosX('A');
+        int y = getPosY('A');
+        setPosOnTerrain(x, y, '_');
+        getPlanet().setAlienType();
+        do {
+            x = randomD6() - 1;
+            y = randomD6() - 1;
+        }while(!posAvailable(x, y));
+        setPosOnTerrain(x, y, 'A');
     }
 
     public void moveAlien() {
@@ -343,5 +394,9 @@ public class GameData {
 
     public boolean convertResources(String from, String to) {
         return getPlayerShip().convertResources(from, to);
+    }
+
+    public void emptyDrone() {
+        getPlayerShip().getMiningDrone().emptyDrone();
     }
 }

@@ -1,6 +1,7 @@
 package Logic.Data;
 import Logic.Data.GameData;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -9,6 +10,8 @@ public class Planet {
     private final char[][] terrain;
     private final List<String> resourcesAvailable;
     private String resourceOnTerrain;
+    private int posXResourceOnTerrain;
+    private int posYResourceOnTerrain;
     private int miningAttemptsRemaining;
     private String alienType;
 
@@ -73,12 +76,32 @@ public class Planet {
         this.terrain[xx][yy] = icon;
     }
 
+    protected boolean posAvailable(int x, int y) {
+        return terrain[x][y] == '_';
+    }
+
     protected List<String> getResourcesAvailable() {
         return resourcesAvailable;
     }
 
     protected String getResourceOnTerrain() {
         return resourceOnTerrain;
+    }
+
+    protected int getPosXResourceOnTerrain() {
+        return posXResourceOnTerrain;
+    }
+
+    public void setPosXResourceOnTerrain(int posXResourceOnTerrain) {
+        this.posXResourceOnTerrain = posXResourceOnTerrain;
+    }
+
+    public void setPosYResourceOnTerrain(int posYResourceOnTerrain) {
+        this.posYResourceOnTerrain = posYResourceOnTerrain;
+    }
+
+    protected int getPosYResourceOnTerrain() {
+        return posYResourceOnTerrain;
     }
 
     protected void setResourceOnTerrain() {
@@ -92,20 +115,24 @@ public class Planet {
 
     public void setAlienType() {
         int x = (int)(Math.random() * 100);
-        if(x < 25)
+        if(x < 25) {
             this.alienType = "BLACK";
-        if(x < 50)
+            return;
+        }
+        if(x < 50) {
             this.alienType = "GREEN";
-        if(x < 75)
+            return;
+        }
+        if(x < 75) {
             this.alienType = "BLUE";
+            return;
+        }
         this.alienType = "RED";
     }
 
     protected void cleanTerrain() {
-        for (int i = 0; i < terrain.length; i++) {
-            for (int j = 0; j < terrain[i].length; j++) {
-                terrain[i][j] = '_';
-            }
+        for (char[] chars : terrain) {
+            Arrays.fill(chars, '_');
         }
     }
 
@@ -120,9 +147,9 @@ public class Planet {
     }
 
     protected int getPosY(char icon) {
-        for (int i = 0; i < terrain.length; i++) {
-            for (int j = 0; j < terrain[i].length; j++) {
-                if(terrain[i][j] == icon)
+        for (char[] chars : terrain) {
+            for (int j = 0; j < chars.length; j++) {
+                if (chars[j] == icon)
                     return j;
             }
         }
@@ -135,7 +162,11 @@ public class Planet {
         int y = getPosY(icon);
         if((c = terrain[x + 1][y]) == '_')
             setPos(x, y, c);
-            setPos(++x, y, icon);
+        else if(terrain[x + 1][y] == 'S')
+            setPos(x, y, '_');
+        else if(terrain[x + 1][y] == 'A')
+            return;
+        setPos(++x, y, icon);
     }
 
     protected void moveLeft(char icon) {
@@ -144,7 +175,11 @@ public class Planet {
         int y = getPosY(icon);
         if((c = terrain[x][y - 1]) == '_')
             setPos(x, y, c);
-            setPos(x, --y, icon);
+        else if(terrain[x][y - 1] == 'S')
+            setPos(x, y, '_');
+        else if(terrain[x][y - 1] == 'A')
+            return;
+        setPos(x, --y, icon);
     }
 
     protected void moveUp(char icon) {
@@ -153,7 +188,11 @@ public class Planet {
         int y = getPosY(icon);
         if((c = terrain[x - 1][y]) == '_')
             setPos(x, y, c);
-            setPos(--x, y, icon);
+        else if(terrain[x - 1][y] == 'S')
+            setPos(x, y, '_');
+        else if(terrain[x - 1][y] == 'A')
+            return;
+        setPos(--x, y, icon);
     }
 
     protected void moveRight(char icon) {
@@ -162,7 +201,11 @@ public class Planet {
         int y = getPosY(icon);
         if((c = terrain[x][y + 1]) == '_')
             setPos(x, y, c);
-            setPos(x, ++y, icon);
+        else if(terrain[x][y + 1] == 'S')
+            setPos(x, y, '_');
+        else if(terrain[x][y + 1] == 'A')
+            return;
+        setPos(x, ++y, icon);
     }
 
     protected String listResources() {
@@ -175,9 +218,9 @@ public class Planet {
 
     public String printTerrain() {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < terrain.length; i++) {
-            for (int j = 0; j < terrain[i].length; j++) {
-                sb.append(terrain[i][j]);
+        for (char[] chars : terrain) {
+            for (char aChar : chars) {
+                sb.append(aChar);
             }
             sb.append('\n');
         }

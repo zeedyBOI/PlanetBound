@@ -51,11 +51,13 @@ public abstract class Ship {
         this.fuel += fuel;
     }
 
-    protected void remove1Fuel () { this.fuel--; }
+    protected void removeFuel(int n) { this.fuel -= n; }
 
     protected int getShield() {
         return shield;
     }
+
+    protected void loseShield(int n) { shield -= n; }
 
     protected void addShield(int shield) {
         this.shield += shield;
@@ -141,7 +143,7 @@ public abstract class Ship {
         this.drone = new MiningDrone();
     }
 
-    protected String emptyDrone() {
+    protected String getResourceMined() {
         return getMiningDrone().getResourceMined();
     }
 

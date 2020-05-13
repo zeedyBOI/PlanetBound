@@ -15,11 +15,10 @@ public class InOrbit extends Adapter {
         FUEL_LOSS,
         NO_EVENT,
         SHIP_RESCUE
-    };
+    }
 
     public InOrbit(GameData data) {
         super(data);
-        createNewSector();
     }
 
     private void applyEvent() {
@@ -61,6 +60,8 @@ public class InOrbit extends Adapter {
 
     private void goToNextSector() {
         if(!getData().inWinCondition() || getData().getCrewMembers() > 0) {
+            if((int)(Math.random() * 8 + 1) == 1)
+                wormhole();
             createNewSector();
             getData().loseFuel();
             getData().upgradeCargoSpace();
@@ -70,7 +71,20 @@ public class InOrbit extends Adapter {
             exit();
     }
 
-    private void createNewSector() {
+    private void wormhole() {
+        if(getData().getShield() < 2) {
+            if(getData().getCrewMembers() < 6) {
+                getData().loseShield(4);
+                getData().loseFuel(4);
+            }
+            getData().killCrew();
+        }
+        getData().loseFuel(3);
+        getData().loseShield(2);
+        System.out.println("YOU WENT THROUGH A WORMHOLE");
+    }
+
+    public void createNewSector() {
         int x = (int)(Math.random() * 10);
         if(x <= 3)
             getData().setCurrentSector(new RedSector());

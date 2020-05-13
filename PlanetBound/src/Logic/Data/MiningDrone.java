@@ -12,6 +12,7 @@ public class MiningDrone {
         this.armor = 6;
         this.readyToLeavePlanet = false;
         this.spawnX = this.spawnY = -1;
+        this.resourceMined = null;
     }
 
     protected void setPos(int xx, int yy) {
@@ -68,7 +69,6 @@ public class MiningDrone {
     }
 
     protected String getResourceMined() {
-        setResourceMined(null);
         return resourceMined;
     }
 
@@ -82,5 +82,9 @@ public class MiningDrone {
                 "alive=" + health +
                 ", armor=" + armor +
                 '}';
+    }
+
+    public void emptyDrone() {
+        setResourceMined(null);
     }
 }
