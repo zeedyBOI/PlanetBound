@@ -352,10 +352,14 @@ public class GameData {
     public void fight() {
         boolean alienKilled = false;
         do {
-            if(attackDrone(getAlienType()))
+            if(attackDrone(getAlienType())) {
                 droneTakeDamage();
-            if(attackAlien(getAlienType()))
+                System.out.println("YOU LOST 1 POINT OF ARMOR");
+            }
+            if(attackAlien(getAlienType())) {
                 alienKilled = true;
+                System.out.println("YOU KILLED THE ALIEN");
+            }
         }while(!alienKilled || !getPlayerShip().droneIsAlive());
     }
 

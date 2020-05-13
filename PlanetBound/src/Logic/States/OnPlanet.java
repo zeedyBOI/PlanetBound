@@ -13,19 +13,30 @@ public class OnPlanet extends Adapter {
         getData().cleanSpots();
         getData().spawnResource();
         getData().setTerrainSpots();
+        getData().spawnAlien();
+        System.out.println(getData().printTerrain());
         scanMine();
         System.out.println(getData().addResourceToShip(getData().getResourceMined()));
+        checkForArmorRefill();
         getData().emptyDrone();
     }
 
+    private void checkForArmorRefill() {
+        System.out.println("Refill drone armor? (Y/N)");
+        Scanner kb = new Scanner(System.in);
+        switch (kb.next().toUpperCase().charAt(0)) {
+            case 'Y':
+                getData().refillDroneArmor();
+                break;
+            case 'N':
+                break;
+        }
+    }
+
     private void scanMine() {
-        boolean a = false;
-        boolean b = false;
         boolean moved;
         Scanner kb = new Scanner(System.in);
-        getData().spawnAlien();
         do {
-            System.out.println(getData().printTerrain());
             do {
                 moved = getData().move(kb.next().toUpperCase().charAt(0), 'D');
             } while (!moved);
@@ -48,7 +59,6 @@ public class OnPlanet extends Adapter {
                 if(getData().isDroneReadyToReturnToShip())
                     return;
         }while(true);
-        //return getData().emptyDrone();
     }
 
     @Override
