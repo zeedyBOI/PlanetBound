@@ -5,8 +5,6 @@ import Logic.Data.RedSector;
 import Logic.Data.Ship;
 import Logic.Data.WhiteSector;
 
-import javax.swing.*;
-
 public class InOrbit extends Adapter {
     enum Events {
         CREW_DEATH,
@@ -62,6 +60,8 @@ public class InOrbit extends Adapter {
         if(!getData().inWinCondition() || getData().getCrewMembers() > 0) {
             if((int)(Math.random() * 8 + 1) == 1)
                 wormhole();
+            if(getData().getFuel() == 0 || getData().getCrewMembers() == 0)
+                exit();
             createNewSector();
             getData().loseFuel();
             getData().upgradeCargoSpace();
@@ -72,16 +72,24 @@ public class InOrbit extends Adapter {
     }
 
     private void wormhole() {
-        if(getData().getShield() < 2) {
-            if(getData().getCrewMembers() < 6) {
-                getData().loseShield(4);
-                getData().loseFuel(4);
+        if(getData().getCrewMembers() < 6) {
+            if(getData().getShield() < 4) {
+                getData().killCrew();
+                return;
             }
-            getData().killCrew();
+            getData().getFuel();
         }
-        getData().loseFuel(3);
-        getData().loseShield(2);
-        System.out.println("YOU WENT THROUGH A WORMHOLE");
+        else {
+            if (getData().getFuel() < 3)
+                return;
+            if (getData().getShield() < 2) {
+                getData().killCrew();
+                return;
+            }
+            getData().loseFuel(3);
+            getData().loseShield(2);
+            System.out.println("YOU WENT THROUGH A WORMHOLE");
+        }
     }
 
     public void createNewSector() {
