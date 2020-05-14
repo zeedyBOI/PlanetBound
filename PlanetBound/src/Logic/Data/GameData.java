@@ -279,6 +279,8 @@ public class GameData {
 
     public void droneTakeDamage() { getPlayerShip().droneTakeDamage(); }
 
+    public boolean droneIsAlive(){ return getPlayerShip().droneIsAlive(); }
+
     public void refillDroneArmor() { getPlayerShip().refillDroneArmor(); }
 
     public void putResourceInDrone(String resource) {
@@ -353,6 +355,10 @@ public class GameData {
         boolean alienKilled = false;
         do {
             if(attackDrone(getAlienType())) {
+                if(getDroneArmor() == 1) {
+                    getPlayerShip().killDrone();
+                    return;
+                }
                 droneTakeDamage();
                 System.out.println("YOU LOST 1 POINT OF ARMOR");
             }

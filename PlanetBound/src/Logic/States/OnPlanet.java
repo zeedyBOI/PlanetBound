@@ -15,7 +15,8 @@ public class OnPlanet extends Adapter {
         getData().setTerrainSpots();
         getData().spawnAlien();
         System.out.println(getData().printTerrain());
-        scanMine();
+        if(!scannedMined())
+            return;
         System.out.println(getData().addResourceToShip(getData().getResourceMined()));
         checkForArmorRefill();
         getData().emptyDrone();
@@ -33,7 +34,7 @@ public class OnPlanet extends Adapter {
         }
     }
 
-    private void scanMine() {
+    private boolean scannedMined() {
         boolean moved;
         Scanner kb = new Scanner(System.in);
         do {
@@ -43,12 +44,16 @@ public class OnPlanet extends Adapter {
             System.out.println(getData().printTerrain());
             if(getData().isAlienNextToDrone()) {
                 getData().fight();
+                if(!getData().droneIsAlive())
+                    return false;
                 getData().spawnNewAlien();
             }
             getData().moveAlien();
             System.out.println(getData().printTerrain());
             if(getData().isAlienNextToDrone()) {
                 getData().fight();
+                if(!getData().droneIsAlive())
+                    return false;
                 getData().spawnNewAlien();
             }
             if (getData().droneAtResource()) {
@@ -57,7 +62,7 @@ public class OnPlanet extends Adapter {
             }
             if (getData().droneAtSpawn())
                 if(getData().isDroneReadyToReturnToShip())
-                    return;
+                    return true;
         }while(true);
     }
 

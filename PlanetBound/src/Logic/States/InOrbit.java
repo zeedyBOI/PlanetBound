@@ -57,18 +57,12 @@ public class InOrbit extends Adapter {
     }
 
     private void goToNextSector() {
-        if(!getData().inWinCondition() || getData().getCrewMembers() > 0) {
-            if((int)(Math.random() * 8 + 1) == 1)
-                wormhole();
-            if(getData().getFuel() == 0 || getData().getCrewMembers() == 0)
-                exit();
-            createNewSector();
-            getData().loseFuel();
-            getData().upgradeCargoSpace();
-            getData().upgradeWeapons();
-        }
-        if(getData().inWinCondition() || getData().getCrewMembers() == 0)
-            exit();
+        if((int)(Math.random() * 8 + 1) == 1)
+            wormhole();
+        createNewSector();
+        getData().loseFuel();
+        getData().upgradeCargoSpace();
+        getData().upgradeWeapons();
     }
 
     private void wormhole() {
@@ -102,6 +96,8 @@ public class InOrbit extends Adapter {
 
     @Override
     public IState nextTurn() {
+        if(getData().inWinCondition() || getData().getCrewMembers() == 0 || getData().getFuel() == 0)
+            return exit();
         applyEvent();
         goToNextSector();
         return new InOrbit(getData());

@@ -40,6 +40,8 @@ public class MiningDrone {
         return health;
     }
 
+    protected void newDrone() { this.health = true; }
+
     protected void setDestroyed() {
         this.health = false;
     }

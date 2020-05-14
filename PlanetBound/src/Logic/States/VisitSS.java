@@ -20,46 +20,47 @@ public class VisitSS extends Adapter {
         return getData().convertResources(from, to);
     }
 
-    public boolean hireCrewMember(String officer) {
-        if(haveEnoughResources(1, 1, 1, 1)){
-            getData().hireCrew();
-            return true;
-        }
+    public boolean enoughResourcesToHire() {
+        if(getData().getCrewMembers() < 6)
+            return haveEnoughResources(1, 1, 1, 1);
         return false;
     }
 
-    public boolean upgradeCargoSpace() {
+    public void hireCrewMember() {
+        getData().hireCrew();
+    }
+
+    public boolean enoughResourcesToUpgradeSpace() {
+        return haveEnoughResources(3, 3, 3, 3);
+    }
+
+    public void upgradeCargoSpace() {
         Ship pShip = getPlayerShip();
-        if(haveEnoughResources(3, 3, 3, 3)) {
-            if (pShip instanceof Mining) {
-                if (getData().getCargoSpacePerResource() < 24) {
-                    getData().upgradeCargoSpace();
-                    return true;
-                }
-            } else {
-                if (getData().getCargoSpacePerResource() < 12) {
-                    getData().upgradeCargoSpace();
-                    return true;
-                }
+        if (pShip instanceof Mining) {
+            if (getData().getCargoSpacePerResource() < 24) {
+                getData().upgradeCargoSpace();
+            }
+        } else {
+            if (getData().getCargoSpacePerResource() < 12) {
+                getData().upgradeCargoSpace();
             }
         }
-        return false;
     }
 
-    public boolean purchaseMiningDrone() {
-        if(haveEnoughResources(2, 2, 2, 2)) {
-            getData().purchaseDrone();
-            return true;
-        }
-        return false;
+    public boolean enoughResourcesToBuyDrone() {
+        return haveEnoughResources(2, 2, 2, 2);
     }
 
-    public boolean upgradeWeapons() {
-        if(haveEnoughResources(2, 2, 2, 2)) {
-            getData().upgradeWeapons();
-            return true;
-        }
-        return false;
+    public void purchaseMiningDrone() {
+        getData().purchaseDrone();
+    }
+
+    public boolean enoughResourcesToUpgradeWeapons() {
+        return haveEnoughResources(2, 2, 2, 2);
+    }
+
+    public void upgradeWeapons() {
+        getData().upgradeWeapons();
     }
 
     private boolean haveEnoughResources(int r, int g, int b, int black) {

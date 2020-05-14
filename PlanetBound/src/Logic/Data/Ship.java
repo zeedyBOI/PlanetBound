@@ -140,7 +140,7 @@ public abstract class Ship {
     }
 
     protected void newMiningDrone() {
-        this.drone = new MiningDrone();
+        getMiningDrone().newDrone();
     }
 
     protected String getResourceMined() {
