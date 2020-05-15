@@ -2,6 +2,7 @@ package Logic.Data;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 public class GameData {
     private Ship playerShip;
@@ -282,6 +283,18 @@ public class GameData {
     public boolean droneIsAlive(){ return getPlayerShip().droneIsAlive(); }
 
     public void refillDroneArmor() { getPlayerShip().refillDroneArmor(); }
+
+    public void checkForArmorRefill() {
+        System.out.println("Refill drone armor? (Y/N)");
+        Scanner kb = new Scanner(System.in);
+        switch (kb.next().toUpperCase().charAt(0)) {
+            case 'Y':
+                refillDroneArmor();
+                break;
+            case 'N':
+                break;
+        }
+    }
 
     public void putResourceInDrone(String resource) {
         getPlayerShip().putResourceInDrone(resource);

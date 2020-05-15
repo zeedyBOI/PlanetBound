@@ -18,20 +18,8 @@ public class OnPlanet extends Adapter {
         if(!scannedMined())
             return;
         System.out.println(getData().addResourceToShip(getData().getResourceMined()));
-        checkForArmorRefill();
+        getData().checkForArmorRefill();
         getData().emptyDrone();
-    }
-
-    private void checkForArmorRefill() {
-        System.out.println("Refill drone armor? (Y/N)");
-        Scanner kb = new Scanner(System.in);
-        switch (kb.next().toUpperCase().charAt(0)) {
-            case 'Y':
-                getData().refillDroneArmor();
-                break;
-            case 'N':
-                break;
-        }
     }
 
     private boolean scannedMined() {

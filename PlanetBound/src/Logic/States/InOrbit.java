@@ -110,7 +110,7 @@ public class InOrbit extends Adapter {
 
     @Override
     public IState landOnPlanet() {
-        if(getData().getMineAttemptsLeft() > 0)
+        if(getData().getMineAttemptsLeft() > 0 && getData().droneIsAlive())
             return new OnPlanet(getData());
         return this;
     }
